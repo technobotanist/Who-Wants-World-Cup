@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants To Go To The World Cup?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="logo">
+            <svg width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="28" fill="#FFD700" stroke="#000" stroke-width="2"/>
+                <text x="30" y="38" text-anchor="middle" font-size="30" font-weight="bold" fill="#000">⚽</text>
+            </svg>
+            <span class="logo-text">Who Wants To Go To The World Cup?</span>
+        </div>
+        
+        <div class="lifelines">
+            <button id="fifty-fifty" class="lifeline" title="50:50 - Remove two wrong answers">
+                <span class="lifeline-icon">50:50</span>
+            </button>
+            <button id="phone-friend" class="lifeline" title="Phone a Friend - 30 second timer">
+                <span class="lifeline-icon">📞</span>
+            </button>
+            <button id="ask-audience" class="lifeline" title="Ask the Audience">
+                <span class="lifeline-icon">👥</span>
+            </button>
+        </div>
+        
+        <button id="mute-btn" class="mute-btn" title="Mute/Unmute">
+            <span id="mute-icon">🔊</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Question and Answers Section -->
+        <div class="game-area">
+            <div class="question-box">
+                <div class="question-number">Question <span id="question-num">1</span> of 15</div>
+                <div class="question-text" id="question-text">Loading question...</div>
+            </div>
+
+            <div class="answers-grid">
+                <button class="answer-btn" data-answer="A">
+                    <span class="answer-letter">A:</span>
+                    <span class="answer-text" id="answer-a">Answer A</span>
+                </button>
+                <button class="answer-btn" data-answer="B">
+                    <span class="answer-letter">B:</span>
+                    <span class="answer-text" id="answer-b">Answer B</span>
+                </button>
+                <button class="answer-btn" data-answer="C">
+                    <span class="answer-letter">C:</span>
+                    <span class="answer-text" id="answer-c">Answer C</span>
+                </button>
+                <button class="answer-btn" data-answer="D">
+                    <span class="answer-letter">D:</span>
+                    <span class="answer-text" id="answer-d">Answer D</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Prize Ladder -->
+        <div class="prize-ladder">
+            <div class="ladder-title">Prize Ladder</div>
+            <div class="ladder-items" id="ladder-items">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Control Hints -->
+    <div class="control-hints">
+        <span class="hint">Keys: <strong>1-4</strong> or <strong>A-D</strong> to select answer</span>
+        <span class="hint">Use lifelines from top bar</span>
+        <span class="hint">Press <strong>Enter</strong> to confirm answer</span>
+    </div>
+
+    <!-- Phone a Friend Overlay -->
+    <div id="phone-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2>📞 Phone a Friend</h2>
+            <div class="timer" id="phone-timer">30</div>
+            <p class="phone-text" id="phone-text">Your friend is thinking...</p>
+            <button class="close-overlay" id="close-phone">Close</button>
+        </div>
+    </div>
+
+    <!-- Ask Audience Overlay -->
+    <div id="audience-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2>👥 Ask the Audience</h2>
+            <div class="audience-results" id="audience-results">
+                <div class="audience-bar">
+                    <div class="bar-label">A:</div>
+                    <div class="bar-container">
+                        <div class="bar" id="bar-a"></div>
+                        <span class="bar-percent" id="percent-a">0%</span>
+                    </div>
+                </div>
+                <div class="audience-bar">
+                    <div class="bar-label">B:</div>
+                    <div class="bar-container">
+                        <div class="bar" id="bar-b"></div>
+                        <span class="bar-percent" id="percent-b">0%</span>
+                    </div>
+                </div>
+                <div class="audience-bar">
+                    <div class="bar-label">C:</div>
+                    <div class="bar-container">
+                        <div class="bar" id="bar-c"></div>
+                        <span class="bar-percent" id="percent-c">0%</span>
+                    </div>
+                </div>
+                <div class="audience-bar">
+                    <div class="bar-label">D:</div>
+                    <div class="bar-container">
+                        <div class="bar" id="bar-d"></div>
+                        <span class="bar-percent" id="percent-d">0%</span>
+                    </div>
+                </div>
+            </div>
+            <button class="close-overlay" id="close-audience">Close</button>
+        </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="gameover-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2 id="gameover-title">Game Over!</h2>
+            <p id="gameover-message">You've won: $0</p>
+            <button class="close-overlay" id="restart-game">Play Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
