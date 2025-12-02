@@ -10,7 +10,8 @@ const gameState = {
     isMuted: false,
     selectedAnswer: null,
     questionsData: [],
-    isLockingIn: false
+    isLockingIn: false,
+    questionsSinceBreak: 0
 };
 
 // Basic audio controller using local media files
@@ -30,7 +31,9 @@ const audioController = {
         correct: new Audio('media/correct.mp3'),
         wrong: new Audio('media/wrong.mp3'),
         // lifeline music
-        lifeline: new Audio('media/lifeline.mp3')
+        lifeline: new Audio('media/lifeline.mp3'),
+        // commercial break sting/bed
+        commercial: new Audio('media/commercial.mp3')
     },
     playBed(name) {
         if (this.muted) return;
@@ -162,12 +165,50 @@ const questions = [
     }
 ];
 
+// Commercial break YouTube videos (watch URLs)
+const commercialVideos = [
+    'https://www.youtube.com/watch?v=eWZoLkbaSsM'
+    // Add more video URLs here as needed
+];
+
+function openRandomCommercial() {
+    if (!commercialVideos.length) return;
+    const base = commercialVideos[Math.floor(Math.random() * commercialVideos.length)];
+
+    // Random timestamp between 0 and 20 minutes (for flexibility)
+    const maxSeconds = 20 * 60;
+    const t = Math.floor(Math.random() * maxSeconds);
+    const url = `${base}&t=${t}s`;
+
+    window.open(url, '_blank');
+}
+
+function startCommercialBreak() {
+    audioController.stopBed();
+    const overlay = document.getElementById('commercial-overlay');
+    const startBtn = document.getElementById('commercial-start');
+    const endBtn = document.getElementById('commercial-end');
+
+    startBtn.classList.remove('hidden');
+    endBtn.classList.add('hidden');
+    overlay.classList.remove('hidden');
+
+    audioController.playCue('commercial');
+}
+
+function finishCommercialBreak() {
+    const overlay = document.getElementById('commercial-overlay');
+    overlay.classList.add('hidden');
+    loadQuestion();
+}
+
 // Initialize Game
 function initGame() {
     gameState.questionsData = [...questions];
     gameState.currentQuestion = 0;
     gameState.score = 0;
     gameState.selectedAnswer = null;
+    gameState.questionsSinceBreak = 0;
     gameState.lifelines = {
         fiftyFifty: true,
         phoneAFriend: true,
@@ -292,7 +333,15 @@ function confirmAnswer() {
         setTimeout(() => {
             gameState.currentQuestion++;
             gameState.score = prizeLadder[gameState.currentQuestion - 1]?.prize || gameState.score;
-            loadQuestion();
+            gameState.questionsSinceBreak++;
+
+            const shouldBreak = gameState.questionsSinceBreak % 3 === 0 && gameState.currentQuestion < prizeLadder.length;
+            if (shouldBreak) {
+                startCommercialBreak();
+            } else {
+                loadQuestion();
+            }
+
             gameState.isLockingIn = false;
         }, 2000);
     } else {
@@ -504,6 +553,20 @@ function setupEventListeners() {
     document.getElementById('restart-game').addEventListener('click', () => {
         document.getElementById('gameover-overlay').classList.add('hidden');
         initGame();
+    });
+
+    // Commercial break
+    const commercialStart = document.getElementById('commercial-start');
+    const commercialEnd = document.getElementById('commercial-end');
+
+    commercialStart.addEventListener('click', () => {
+        openRandomCommercial();
+        commercialStart.classList.add('hidden');
+        commercialEnd.classList.remove('hidden');
+    });
+
+    commercialEnd.addEventListener('click', () => {
+        finishCommercialBreak();
     });
     
     // Keyboard controls
