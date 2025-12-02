@@ -13,20 +13,24 @@ const gameState = {
     isLockingIn: false
 };
 
-// Basic audio controller using tag-based assets you can swap
+// Basic audio controller using direct MyInstants URLs
 const audioController = {
     currentBed: null,
     muted: false,
     beds: {
-        intro: new Audio('media/intro-theme.mp3'),
-        question: new Audio('media/question-bed.mp3')
+        // looping suspense / thinking bed
+        question: new Audio('https://www.myinstants.com/media/sounds/millionaire-suspense-29485.mp3')
     },
     cues: {
-        select: new Audio('media/select.mp3'),
-        final: new Audio('media/final-answer.mp3'),
-        correct: new Audio('media/correct.mp3'),
-        wrong: new Audio('media/wrong.mp3'),
-        lifeline: new Audio('media/lifeline.mp3')
+        // question revealed
+        playQuestion: new Audio('https://www.myinstants.com/media/sounds/play-millionaire-30998.mp3'),
+        // checkpoint final answer sting
+        final: new Audio('https://www.myinstants.com/media/sounds/final-millionaire-97279.mp3'),
+        // correct / wrong answer reveals
+        correct: new Audio('https://www.myinstants.com/media/sounds/correct-millionaire-82475.mp3'),
+        wrong: new Audio('https://www.myinstants.com/media/sounds/wrong-millionaire-93692.mp3'),
+        // lifeline music
+        lifeline: new Audio('https://www.myinstants.com/media/sounds/lifeline-millionaire-51056.mp3')
     },
     playBed(name) {
         if (this.muted) return;
@@ -235,7 +239,8 @@ function loadQuestion() {
     gameState.selectedAnswer = null;
     renderPrizeLadder();
 
-    // switch to question thinking bed
+    // question reveal sting then suspense bed
+    audioController.playCue('playQuestion');
     audioController.playBed('question');
 }
 
@@ -274,7 +279,15 @@ function confirmAnswer() {
         selectedBtn.classList.remove('selected');
         selectedBtn.classList.add('correct');
         audioController.stopBed();
-        audioController.playCue('correct');
+
+        const qNumber = gameState.currentQuestion + 1;
+        const isMilestone = prizeLadder.some(p => p.question === qNumber && p.milestone);
+
+        if (isMilestone) {
+            audioController.playCue('final');
+        } else {
+            audioController.playCue('correct');
+        }
         
         setTimeout(() => {
             gameState.currentQuestion++;
