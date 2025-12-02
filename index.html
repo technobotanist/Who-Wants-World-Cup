@@ -4,15 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Who Wants To Go To The World Cup?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Top Bar -->
     <div class="top-bar">
         <div class="logo">
-            <svg width="60" height="60" viewBox="0 0 60 60">
-                <circle cx="30" cy="30" r="28" fill="#FFD700" stroke="#000" stroke-width="2"/>
-                <text x="30" y="38" text-anchor="middle" font-size="30" font-weight="bold" fill="#000">⚽</text>
+            <svg class="logo-mark" viewBox="0 0 200 200" aria-hidden="true">
+                <defs>
+                    <radialGradient id="logoInner" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#1e293b" />
+                        <stop offset="60%" stop-color="#020617" />
+                        <stop offset="100%" stop-color="#000" />
+                    </radialGradient>
+                </defs>
+                <circle cx="100" cy="100" r="95" fill="#0f172a" stroke="#facc15" stroke-width="4" />
+                <circle cx="100" cy="100" r="75" fill="url(#logoInner)" stroke="#fbbf24" stroke-width="3" />
+                <text x="100" y="70" text-anchor="middle" class="logo-ring-text">WHO WANTS TO</text>
+                <text x="100" y="125" text-anchor="middle" class="logo-ring-text">GO TO THE WORLD CUP</text>
+                <g class="logo-spokes">
+                    <line x1="100" y1="30" x2="100" y2="12" />
+                    <line x1="154" y1="46" x2="168" y2="34" />
+                    <line x1="176" y1="100" x2="194" y2="100" />
+                    <line x1="154" y1="154" x2="168" y2="168" />
+                    <line x1="100" y1="176" x2="100" y2="194" />
+                    <line x1="46" y1="154" x2="34" y2="168" />
+                    <line x1="24" y1="100" x2="6" y2="100" />
+                    <line x1="46" y1="46" x2="34" y2="34" />
+                </g>
+                <text x="100" y="102" text-anchor="middle" class="logo-center">⚽</text>
             </svg>
             <span class="logo-text">Who Wants To Go To The World Cup?</span>
         </div>

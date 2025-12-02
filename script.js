@@ -9,26 +9,74 @@ const gameState = {
     },
     isMuted: false,
     selectedAnswer: null,
-    questionsData: []
+    questionsData: [],
+    isLockingIn: false
 };
 
-// Prize Ladder (in order from question 1 to 15)
+// Basic audio controller using tag-based assets you can swap
+const audioController = {
+    currentBed: null,
+    muted: false,
+    beds: {
+        intro: new Audio('media/intro-theme.mp3'),
+        question: new Audio('media/question-bed.mp3')
+    },
+    cues: {
+        select: new Audio('media/select.mp3'),
+        final: new Audio('media/final-answer.mp3'),
+        correct: new Audio('media/correct.mp3'),
+        wrong: new Audio('media/wrong.mp3'),
+        lifeline: new Audio('media/lifeline.mp3')
+    },
+    playBed(name) {
+        if (this.muted) return;
+        this.stopBed();
+        const bed = this.beds[name];
+        if (!bed) return;
+        bed.loop = true;
+        bed.currentTime = 0;
+        bed.play();
+        this.currentBed = bed;
+    },
+    stopBed() {
+        if (this.currentBed) {
+            this.currentBed.pause();
+            this.currentBed.currentTime = 0;
+            this.currentBed = null;
+        }
+    },
+    playCue(name) {
+        if (this.muted) return;
+        const cue = this.cues[name];
+        if (!cue) return;
+        cue.currentTime = 0;
+        cue.play();
+    },
+    setMuted(value) {
+        this.muted = value;
+        if (value) {
+            this.stopBed();
+        }
+    }
+};
+
+// Prize Ladder CLP (in order from question 1 to 15)
 const prizeLadder = [
-    { question: 1, prize: "$100", milestone: false },
-    { question: 2, prize: "$200", milestone: false },
-    { question: 3, prize: "$300", milestone: false },
-    { question: 4, prize: "$500", milestone: false },
-    { question: 5, prize: "$1,000", milestone: true },
-    { question: 6, prize: "$2,000", milestone: false },
-    { question: 7, prize: "$4,000", milestone: false },
-    { question: 8, prize: "$8,000", milestone: false },
-    { question: 9, prize: "$16,000", milestone: false },
-    { question: 10, prize: "$32,000", milestone: true },
-    { question: 11, prize: "$64,000", milestone: false },
-    { question: 12, prize: "$125,000", milestone: false },
-    { question: 13, prize: "$250,000", milestone: false },
-    { question: 14, prize: "$500,000", milestone: false },
-    { question: 15, prize: "World Cup Trip!", milestone: true }
+    { question: 1, prize: "CLP 100.000", milestone: false },
+    { question: 2, prize: "CLP 200.000", milestone: false },
+    { question: 3, prize: "CLP 300.000", milestone: false },
+    { question: 4, prize: "CLP 500.000", milestone: false },
+    { question: 5, prize: "CLP 1.000.000", milestone: true },
+    { question: 6, prize: "CLP 2.000.000", milestone: false },
+    { question: 7, prize: "CLP 4.000.000", milestone: false },
+    { question: 8, prize: "CLP 8.000.000", milestone: false },
+    { question: 9, prize: "CLP 16.000.000", milestone: false },
+    { question: 10, prize: "CLP 32.000.000", milestone: true },
+    { question: 11, prize: "CLP 64.000.000", milestone: false },
+    { question: 12, prize: "CLP 125.000.000", milestone: false },
+    { question: 13, prize: "CLP 250.000.000", milestone: false },
+    { question: 14, prize: "CLP 500.000.000", milestone: false },
+    { question: 15, prize: "CLP 1.000.000.000", milestone: true }
 ];
 
 // Questions Database
@@ -186,11 +234,14 @@ function loadQuestion() {
     
     gameState.selectedAnswer = null;
     renderPrizeLadder();
+
+    // switch to question thinking bed
+    audioController.playBed('question');
 }
 
 // Select Answer
 function selectAnswer(answer) {
-    if (gameState.selectedAnswer !== null) return;
+    if (gameState.selectedAnswer !== null || gameState.isLockingIn) return;
     
     const answerBtns = document.querySelectorAll('.answer-btn');
     answerBtns.forEach(btn => btn.classList.remove('selected'));
@@ -198,11 +249,15 @@ function selectAnswer(answer) {
     const selectedBtn = document.querySelector(`[data-answer="${answer}"]`);
     selectedBtn.classList.add('selected');
     gameState.selectedAnswer = answer;
+
+    audioController.playCue('select');
 }
 
 // Confirm Answer
 function confirmAnswer() {
-    if (gameState.selectedAnswer === null) return;
+    if (gameState.selectedAnswer === null || gameState.isLockingIn) return;
+
+    gameState.isLockingIn = true;
     
     const questionData = gameState.questionsData[gameState.currentQuestion];
     const answerKeys = ['A', 'B', 'C', 'D'];
@@ -218,21 +273,25 @@ function confirmAnswer() {
     if (isCorrect) {
         selectedBtn.classList.remove('selected');
         selectedBtn.classList.add('correct');
-        playSound('correct');
+        audioController.stopBed();
+        audioController.playCue('correct');
         
         setTimeout(() => {
             gameState.currentQuestion++;
             gameState.score = prizeLadder[gameState.currentQuestion - 1]?.prize || gameState.score;
             loadQuestion();
+            gameState.isLockingIn = false;
         }, 2000);
     } else {
         selectedBtn.classList.remove('selected');
         selectedBtn.classList.add('wrong');
         correctBtn.classList.add('correct');
-        playSound('wrong');
+        audioController.stopBed();
+        audioController.playCue('wrong');
         
         setTimeout(() => {
             endGame(false);
+            gameState.isLockingIn = false;
         }, 2000);
     }
 }
@@ -245,11 +304,11 @@ function endGame(won) {
     
     if (won) {
         title.textContent = "🎉 Congratulations! 🎉";
-        message.textContent = `You've won a trip to the World Cup! 🏆⚽`;
+        message.textContent = `You've won: ${prizeLadder[prizeLadder.length - 1].prize} (World Cup Trip!) 🏆⚽`;
         playSound('win');
     } else {
         // Calculate winnings based on last milestone
-        let winnings = "$0";
+        let winnings = "CLP 0";
         for (let i = gameState.currentQuestion - 1; i >= 0; i--) {
             if (prizeLadder[i].milestone) {
                 winnings = prizeLadder[i].prize;
@@ -268,31 +327,28 @@ function endGame(won) {
 // Lifeline: 50/50
 function useFiftyFifty() {
     if (!gameState.lifelines.fiftyFifty || gameState.selectedAnswer !== null) return;
-    
+
     gameState.lifelines.fiftyFifty = false;
     document.getElementById('fifty-fifty').disabled = true;
-    
+
     const questionData = gameState.questionsData[gameState.currentQuestion];
     const correctIndex = questionData.correct;
     const answerBtns = document.querySelectorAll('.answer-btn');
-    
-    // Get wrong answer indices
+
     const wrongIndices = [0, 1, 2, 3].filter(i => i !== correctIndex);
-    
-    // Randomly select 2 wrong answers to hide
     const toHide = [];
+
     while (toHide.length < 2) {
         const randomIndex = wrongIndices[Math.floor(Math.random() * wrongIndices.length)];
         if (!toHide.includes(randomIndex)) {
             toHide.push(randomIndex);
         }
     }
-    
-    // Hide the selected wrong answers
+
     toHide.forEach(index => {
         answerBtns[index].disabled = true;
     });
-    
+
     playSound('lifeline');
 }
 
@@ -338,10 +394,11 @@ function usePhoneAFriend() {
         
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
+            document.getElementById('phone-overlay').classList.add('hidden');
         }
     }, 1000);
-    
-    playSound('lifeline');
+
+    audioController.playCue('lifeline');
 }
 
 // Lifeline: Ask the Audience
@@ -393,55 +450,10 @@ function useAskAudience() {
         }, 100);
     });
     
-    playSound('lifeline');
+    audioController.playCue('lifeline');
 }
 
-// Sound Effects (using Web Audio API)
-function playSound(type) {
-    if (gameState.isMuted) return;
-    
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    switch(type) {
-        case 'correct':
-            oscillator.frequency.value = 880;
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.3);
-            break;
-        case 'wrong':
-            oscillator.frequency.value = 220;
-            oscillator.type = 'sawtooth';
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.5);
-            break;
-        case 'lifeline':
-            oscillator.frequency.value = 660;
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.2);
-            break;
-        case 'win':
-            oscillator.frequency.value = 1320;
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.5);
-            break;
-        case 'lose':
-            oscillator.frequency.value = 165;
-            oscillator.type = 'sawtooth';
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + 0.8);
-            break;
-    }
-}
+// Web Audio oscillator placeholder removed in favour of tag-based audioController
 
 // Setup Event Listeners
 function setupEventListeners() {
@@ -462,6 +474,7 @@ function setupEventListeners() {
     document.getElementById('mute-btn').addEventListener('click', () => {
         gameState.isMuted = !gameState.isMuted;
         document.getElementById('mute-icon').textContent = gameState.isMuted ? '🔇' : '🔊';
+        audioController.setMuted(gameState.isMuted);
     });
     
     // Overlay close buttons

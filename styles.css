@@ -5,8 +5,8 @@
 }
 
 body {
-    font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    font-family: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1e3a8a 0%, #020617 55%, #000 100%);
     color: #ffffff;
     overflow: hidden;
     height: 100vh;
@@ -32,10 +32,35 @@ body {
 }
 
 .logo-text {
-    font-size: 24px;
-    font-weight: bold;
-    color: #FFD700;
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #facc15;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.logo-mark {
+    width: 80px;
+    height: 80px;
+}
+
+.logo-ring-text {
+    fill: #e5e7eb;
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+}
+
+.logo-spokes line {
+    stroke: #facc15;
+    stroke-width: 2;
+}
+
+.logo-center {
+    fill: #facc15;
+    font-size: 30px;
 }
 
 .lifelines {
@@ -106,7 +131,7 @@ body {
 }
 
 .question-box {
-    background: linear-gradient(145deg, #1e3a8a, #1e40af);
+    background: radial-gradient(circle at top, #111827 0%, #020617 60%, #000 100%);
     border: 3px solid #FFD700;
     border-radius: 15px;
     padding: 30px;
@@ -128,6 +153,13 @@ body {
     font-size: 26px;
     line-height: 1.5;
     font-weight: 500;
+}
+
+.host-hint {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #e5e7eb;
+    font-style: italic;
 }
 
 /* Answers Grid */
@@ -154,22 +186,28 @@ body {
 }
 
 .answer-btn:hover:not(:disabled) {
-    background: linear-gradient(145deg, #334155, #475569);
     border-color: #FFD700;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3);
 }
 
-.answer-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
 }
 
 .answer-btn.selected {
+/* removed host-hint / eliminated manual styles */
     background: linear-gradient(145deg, #FFA500, #FFD700);
     border-color: #FFD700;
     color: #000;
     font-weight: bold;
+}
+
+.answer-btn.eliminated {
+    background: linear-gradient(145deg, #111827, #020617);
+    border-color: #111827;
+    color: #4b5563;
+    opacity: 0.4;
 }
 
 .answer-btn.correct {
@@ -200,7 +238,7 @@ body {
 /* Prize Ladder */
 .prize-ladder {
     width: 280px;
-    background: rgba(0, 0, 0, 0.5);
+    background: radial-gradient(circle at top, #020617 0%, #000 60%);
     border: 3px solid #FFD700;
     border-radius: 15px;
     padding: 20px;
@@ -234,7 +272,7 @@ body {
 }
 
 .ladder-item.current {
-    background: linear-gradient(145deg, #FFA500, #FFD700);
+    background: linear-gradient(145deg, #fbbf24, #facc15);
     border-color: #FFD700;
     color: #000;
     font-weight: bold;
@@ -248,7 +286,7 @@ body {
 }
 
 .ladder-item.milestone {
-    border-color: #FFD700;
+    border-color: #facc15;
     font-weight: bold;
 }
 
