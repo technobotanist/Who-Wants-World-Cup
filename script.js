@@ -19,18 +19,18 @@ const audioController = {
     muted: false,
     beds: {
         // looping suspense / thinking bed
-        question: new Audio('media/millionaire-suspense-29485.mp3')
+        question: new Audio('media/suspense.mp3')
     },
     cues: {
         // question revealed
-        playQuestion: new Audio('media/play-millionaire-30998.mp3'),
+        playQuestion: new Audio('media/play.mp3'),
         // checkpoint final answer sting
-        final: new Audio('media/final-millionaire-97279.mp3'),
+        final: new Audio('media/final.mp3'),
         // correct / wrong answer reveals
-        correct: new Audio('media/correct-millionaire-82475.mp3'),
-        wrong: new Audio('media/wrong-millionaire-93692.mp3'),
+        correct: new Audio('media/correct.mp3'),
+        wrong: new Audio('media/wrong.mp3'),
         // lifeline music
-        lifeline: new Audio('media/lifeline-millionaire-51056.mp3')
+        lifeline: new Audio('media/lifeline.mp3')
     },
     playBed(name) {
         if (this.muted) return;
