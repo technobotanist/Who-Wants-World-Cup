@@ -13,24 +13,24 @@ const gameState = {
     isLockingIn: false
 };
 
-// Basic audio controller using direct MyInstants URLs
+// Basic audio controller using local media files
 const audioController = {
     currentBed: null,
     muted: false,
     beds: {
         // looping suspense / thinking bed
-        question: new Audio('https://www.myinstants.com/media/sounds/millionaire-suspense-29485.mp3')
+        question: new Audio('media/millionaire-suspense-29485.mp3')
     },
     cues: {
         // question revealed
-        playQuestion: new Audio('https://www.myinstants.com/media/sounds/play-millionaire-30998.mp3'),
+        playQuestion: new Audio('media/play-millionaire-30998.mp3'),
         // checkpoint final answer sting
-        final: new Audio('https://www.myinstants.com/media/sounds/final-millionaire-97279.mp3'),
+        final: new Audio('media/final-millionaire-97279.mp3'),
         // correct / wrong answer reveals
-        correct: new Audio('https://www.myinstants.com/media/sounds/correct-millionaire-82475.mp3'),
-        wrong: new Audio('https://www.myinstants.com/media/sounds/wrong-millionaire-93692.mp3'),
+        correct: new Audio('media/correct-millionaire-82475.mp3'),
+        wrong: new Audio('media/wrong-millionaire-93692.mp3'),
         // lifeline music
-        lifeline: new Audio('https://www.myinstants.com/media/sounds/lifeline-millionaire-51056.mp3')
+        lifeline: new Audio('media/lifeline-millionaire-51056.mp3')
     },
     playBed(name) {
         if (this.muted) return;
@@ -318,7 +318,8 @@ function endGame(won) {
     if (won) {
         title.textContent = "🎉 Congratulations! 🎉";
         message.textContent = `You've won: ${prizeLadder[prizeLadder.length - 1].prize} (World Cup Trip!) 🏆⚽`;
-        playSound('win');
+        audioController.stopBed();
+        audioController.playCue('final');
     } else {
         // Calculate winnings based on last milestone
         let winnings = "CLP 0";
@@ -331,7 +332,8 @@ function endGame(won) {
         
         title.textContent = "Game Over!";
         message.textContent = `You've won: ${winnings}`;
-        playSound('lose');
+        audioController.stopBed();
+        audioController.playCue('wrong');
     }
     
     overlay.classList.remove('hidden');
@@ -362,7 +364,7 @@ function useFiftyFifty() {
         answerBtns[index].disabled = true;
     });
 
-    playSound('lifeline');
+    audioController.playCue('lifeline');
 }
 
 // Lifeline: Phone a Friend
