@@ -33,7 +33,9 @@ const audioController = {
         // lifeline music
         lifeline: new Audio('media/lifeline.mp3'),
         // commercial break sting/bed
-        commercial: new Audio('media/commercial.mp3')
+        commercial: new Audio('media/commercial.mp3'),
+        // winner celebration
+        winner: new Audio('media/winner.mp3')
     },
     playBed(name) {
         if (this.muted) return;
@@ -361,6 +363,48 @@ function confirmAnswer() {
     }
 }
 
+// Create Confetti
+function createConfetti() {
+    const colors = ['#FFD700', '#FF1493', '#00CED1', '#9370DB', '#FF6347', '#FFA500', '#00FF00'];
+    const confettiCount = 150;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(confetti);
+        
+        // Remove confetti after animation
+        setTimeout(() => {
+            confetti.remove();
+        }, 6000);
+    }
+}
+
+// Create Confetti
+function createConfetti() {
+    const colors = ['#FFD700', '#FF1493', '#00CED1', '#9370DB', '#FF6347', '#FFA500', '#00FF00'];
+    const confettiCount = 150;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(confetti);
+        
+        // Remove confetti after animation
+        setTimeout(() => {
+            confetti.remove();
+        }, 6000);
+    }
+}
+
 // End Game
 function endGame(won) {
     const overlay = document.getElementById('gameover-overlay');
@@ -371,7 +415,10 @@ function endGame(won) {
         title.textContent = "🎉 Congratulations! 🎉";
         message.textContent = `You've won: ${prizeLadder[prizeLadder.length - 1].prize} (World Cup Trip!) 🏆⚽`;
         audioController.stopBed();
-        audioController.playCue('final');
+        audioController.playCue('winner');
+        overlay.classList.add('winner');
+        createConfetti();
+        createConfetti();
     } else {
         // Calculate winnings based on last milestone
         let winnings = "CLP 0";
