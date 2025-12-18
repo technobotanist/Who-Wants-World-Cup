@@ -89,79 +89,79 @@ const prizeLadder = [
 // Questions Database
 const questions = [
     {
-        question: "Which country hosted the first FIFA World Cup in 1930?",
-        answers: ["Brazil", "Uruguay", "Argentina", "England"],
+        question: "The 2026 World Cup is co-hosted by the USA and Canada and which other country?",
+        answers: ["Costa Rica", "Mexico", "Panama", "Jamaica"],
         correct: 1
     },
     {
-        question: "How many teams participate in the FIFA World Cup finals (since 1998)?",
-        answers: ["16", "24", "32", "48"],
+        question: "How many teams will compete at the 2026 World Cup?",
+        answers: ["32", "40", "48", "64"],
         correct: 2
     },
     {
-        question: "Which player has scored the most World Cup goals in history?",
-        answers: ["Pelé", "Ronaldo", "Miroslav Klose", "Diego Maradona"],
+        question: "How many matches will be played in the United States during the 2026 tournament?",
+        answers: ["52", "65", "78", "91"],
         correct: 2
     },
     {
-        question: "Which country has won the most FIFA World Cup titles?",
-        answers: ["Germany", "Argentina", "Brazil", "Italy"],
-        correct: 2
-    },
-    {
-        question: "In which year did Diego Maradona score the famous 'Hand of God' goal?",
-        answers: ["1982", "1986", "1990", "1994"],
+        question: "Scotland's first group match of the 2026 World Cup is Haiti vs Scotland. Where is it scheduled to be played?",
+        answers: ["Hard Rock Stadium (Miami)", "Gillette Stadium (Boston area)", "Lincoln Financial Field (Philadelphia)", "MetLife Stadium (New York–New Jersey)"],
         correct: 1
     },
     {
-        question: "Which country won the 2018 FIFA World Cup?",
-        answers: ["Germany", "France", "Croatia", "Belgium"],
-        correct: 1
-    },
-    {
-        question: "What is the name of the 2022 World Cup official match ball?",
-        answers: ["Jabulani", "Brazuca", "Telstar", "Al Rihla"],
+        question: "How many matches are scheduled for the 2026 World Cup in total?",
+        answers: ["80", "96", "100", "104"],
         correct: 3
     },
     {
-        question: "Which player holds the record for most World Cup appearances?",
-        answers: ["Lothar Matthäus", "Miroslav Klose", "Lionel Messi", "Cristiano Ronaldo"],
+        question: "Where was the opening match of the 1994 FIFA World Cup played?",
+        answers: ["Rose Bowl (Pasadena)", "Soldier Field (Chicago)", "Giants Stadium (East Rutherford)", "RFK Stadium (Washington, DC)"],
+        correct: 1
+    },
+    {
+        question: "The opening match of the 2026 World Cup is Mexico vs South Africa. Where is it scheduled to be played?",
+        answers: ["Estadio BBVA (Monterrey)", "Estadio Akron (Guadalajara)", "Estadio Azteca (Mexico City)", "Hard Rock Stadium (Miami)"],
         correct: 2
     },
     {
-        question: "Which stadium hosted the 2014 World Cup final?",
-        answers: ["Estadio Azteca", "Wembley", "Maracanã", "Allianz Arena"],
-        correct: 2
-    },
-    {
-        question: "Who was the top scorer of the 2010 World Cup?",
-        answers: ["Diego Forlán", "David Villa", "Thomas Müller", "Wesley Sneijder"],
-        correct: 2
-    },
-    {
-        question: "Which country has never missed a World Cup finals?",
-        answers: ["Argentina", "Germany", "Brazil", "Italy"],
-        correct: 2
-    },
-    {
-        question: "What is the fastest goal scored in World Cup history?",
-        answers: ["11 seconds", "15 seconds", "27 seconds", "45 seconds"],
+        question: "Scotland won their UEFA World Cup qualification group. Which country finished runner-up?",
+        answers: ["Denmark", "Greece", "Belarus", "Cyprus"],
         correct: 0
     },
     {
-        question: "Who won the Golden Ball at the 2022 World Cup?",
-        answers: ["Kylian Mbappé", "Lionel Messi", "Luka Modrić", "Cristiano Ronaldo"],
-        correct: 1
-    },
-    {
-        question: "Which country hosted the 2006 FIFA World Cup?",
-        answers: ["France", "Italy", "Germany", "Spain"],
+        question: "From which round onward will all matches of the 2026 World Cup be played in the United States?",
+        answers: ["Round of 32", "Round of 16", "Quarterfinals", "Semifinals"],
         correct: 2
     },
     {
-        question: "How many times has England won the FIFA World Cup?",
-        answers: ["0", "1", "2", "3"],
+        question: "During the 2026 World Cup, what official name will FIFA use for MetLife Stadium?",
+        answers: ["New York Stadium", "New York New Jersey Stadium", "Hudson River Arena", "Meadowlands National Stadium"],
         correct: 1
+    },
+    {
+        question: "Which Celtic FC player represented Canada at the 2022 World Cup?",
+        answers: ["Cameron Carter-Vickers", "Alistair Johnston", "Greg Taylor", "Joe Hart"],
+        correct: 1
+    },
+    {
+        question: "Which of these countries has never appeared in a men's World Cup final?",
+        answers: ["Portugal", "Sweden", "Hungary", "Czechoslovakia"],
+        correct: 0
+    },
+    {
+        question: "Which country has never played a men's World Cup match, despite having the largest population among these options?",
+        answers: ["Guatemala", "Honduras", "Panama", "Jamaica"],
+        correct: 0
+    },
+    {
+        question: "Which is the least populous country to have reached a men's World Cup semifinal?",
+        answers: ["Uruguay", "Croatia", "Sweden", "Belgium"],
+        correct: 0
+    },
+    {
+        question: "FIFA's 2026 plan includes a $50 million prize for the champions. What is the total prize pool approved for the tournament?",
+        answers: ["$440 million", "$576 million", "$727 million", "$1.2 billion"],
+        correct: 2
     }
 ];
 
@@ -173,6 +173,10 @@ const commercialVideos = [
 
 function openRandomCommercial() {
     if (!commercialVideos.length) return;
+    
+    // Stop suspenseful music immediately when opening YouTube
+    audioController.stopBed();
+    
     const base = commercialVideos[Math.floor(Math.random() * commercialVideos.length)];
 
     // Random timestamp between 0 and 20 minutes (for flexibility)
@@ -184,7 +188,6 @@ function openRandomCommercial() {
 }
 
 function startCommercialBreak() {
-    audioController.stopBed();
     const overlay = document.getElementById('commercial-overlay');
     const startBtn = document.getElementById('commercial-start');
     const endBtn = document.getElementById('commercial-end');
