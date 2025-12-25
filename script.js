@@ -69,23 +69,23 @@ const audioController = {
     }
 };
 
-// Prize Ladder CLP (in order from question 1 to 15)
+// Prize Ladder KRW (in order from question 1 to 15)
 const prizeLadder = [
-    { question: 1, prize: "CLP 100.000", milestone: false },
-    { question: 2, prize: "CLP 200.000", milestone: false },
-    { question: 3, prize: "CLP 300.000", milestone: false },
-    { question: 4, prize: "CLP 500.000", milestone: false },
-    { question: 5, prize: "CLP 1.000.000", milestone: true },
-    { question: 6, prize: "CLP 2.000.000", milestone: false },
-    { question: 7, prize: "CLP 4.000.000", milestone: false },
-    { question: 8, prize: "CLP 8.000.000", milestone: false },
-    { question: 9, prize: "CLP 16.000.000", milestone: false },
-    { question: 10, prize: "CLP 32.000.000", milestone: true },
-    { question: 11, prize: "CLP 64.000.000", milestone: false },
-    { question: 12, prize: "CLP 125.000.000", milestone: false },
-    { question: 13, prize: "CLP 250.000.000", milestone: false },
-    { question: 14, prize: "CLP 500.000.000", milestone: false },
-    { question: 15, prize: "CLP 1.000.000.000", milestone: true }
+    { question: 1, prize: "₩100,000", milestone: false },
+    { question: 2, prize: "₩200,000", milestone: false },
+    { question: 3, prize: "₩300,000", milestone: false },
+    { question: 4, prize: "₩500,000", milestone: false },
+    { question: 5, prize: "₩1,000,000", milestone: true },
+    { question: 6, prize: "₩2,000,000", milestone: false },
+    { question: 7, prize: "₩4,000,000", milestone: false },
+    { question: 8, prize: "₩8,000,000", milestone: false },
+    { question: 9, prize: "₩16,000,000", milestone: false },
+    { question: 10, prize: "₩32,000,000", milestone: true },
+    { question: 11, prize: "₩64,000,000", milestone: false },
+    { question: 12, prize: "₩125,000,000", milestone: false },
+    { question: 13, prize: "₩250,000,000", milestone: false },
+    { question: 14, prize: "₩500,000,000", milestone: false },
+    { question: 15, prize: "₩1,000,000,000", milestone: true }
 ];
 
 // Questions Database
